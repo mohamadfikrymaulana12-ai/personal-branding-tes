@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Branding Builder By Fikry.SN</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --success-bg: #ECFDF5;
+            --success-border: #10B981;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* FULL RASIO & MOBILE FRIENDLY */
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 1200px; /* Lebar maksimal diperbesar untuk layar besar, fleksibel di layar kecil */
+            min-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+            flex-grow: 1;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #FAFAFA;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #FFF;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        input[readonly] {
+            background-color: #E5E7EB;
+            color: #4B5563;
+            cursor: not-allowed;
+            border-style: dashed;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .action-box {
+            background-color: #EEF2FF;
+            border: 1px dashed var(--primary);
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            width: 100%; /* Default Full width di mobile agar mudah ditekan */
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .navigation .btn {
+            width: auto;
+            flex: 1;
+        }
+
+        /* RESPONSIVE GRID LAYOUT */
+        .w-half {
+            display: grid;
+            grid-template-columns: 1fr; /* Default 1 kolom untuk HP */
+            gap: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .w-half {
+                grid-template-columns: 1fr 1fr; /* Jadi 2 kolom otomatis di Tablet & Laptop */
+            }
+            .container {
+                padding: 35px;
+            }
+            .header h1 {
+                font-size: 26px;
+            }
+            .btn {
+                width: auto; /* Tombol kembali ke ukuran normal di layar besar */
+            }
+        }
+        
+        .result-section {
+            background: var(--success-bg);
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 4px solid var(--success-border);
+            margin-top: 15px;
+        }
+        
+        .result-section h4 {
+            margin-top: 0;
+            font-size: 14px;
+            color: #047857;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-hint {
+            font-size: 12px;
+            color: #047857;
+            background: #D1FAE5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        /* TABEL RESPONSIF */
+        .table-wrapper {
+            overflow-x: auto;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 600px; /* Memastikan tabel tidak terlalu gepeng di HP */
+        }
+
+        .table-wrapper th, 
+        .table-wrapper td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .table-wrapper th {
+            background-color: #F9FAFB;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        #rawPillarData {
+            display: none;
+        }
+
+        /* LAPORAN */
+        .report-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .report-section-title {
+            color: var(--primary);
+            font-size: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin-top: 0;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+        
+        .report-info-table td {
+            padding: 6px 0;
+            font-size: 14px;
+        }
+
+        .report-quote {
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+            font-style: italic;
+            color: var(--text-main);
+            margin: 0 0 20px 0;
+            font-size: 14px;
+            background: #EEF2FF;
+            padding: 14px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* PRINT / PDF MODE */
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+                min-height: auto;
+            }
+            .navigation, .header p {
+                display: none !important;
+            }
+            .report-card {
+                border: none;
+                padding: 0;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>PERSONAL BRANDING BUILDER</h1>
+        <p>By Fikry.SN</p>
+    </div>
+
+    <!-- ONBOARDING -->
+    <div id="step-0" class="step active">
+        <div class="step-title">Selamat Datang 👋</div>
+        <div class="form-group">
+            <label>Nama Kamu / Nama Brand</label>
+            <input type="text" id="nama" placeholder="Ketik nama kamu di sini..." onkeypress="handleEnter(event, 1)">
+        </div>
+        <div class="navigation" style="justify-content: flex-end;">
+            <button type="button" class="btn" onclick="nextStep(1)">Mulai Bangun Identitas →</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 1: IKIGAI -->
+    <div id="step-1" class="step">
+        <div class="step-title">
+            <span>Tahap 1: Finder Personal Identity</span>
+            <span style="font-size: 12px; font-weight: normal; color: #6B7280;">1 dari 3</span>
+        </div>
+        
+        <div class="w-half">
+            <div class="form-group">
+                <label>❤️ Yang Kamu Sukai</label>
+                <input type="text" id="love" list="sukaList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="sukaList">
+                    <option value="Menulis cerita dan artikel">
+                    <option value="Desain grafis dan ilustrasi">
+                    <option value="Public speaking / ngobrol di depan kamera">
+                    <option value="Menganalisa data dan bikin laporan">
+                    <option value="Mencoba berbagai macam makanan (Kuliner)">
+                    <option value="Fotografi dan videografi">
+                    <option value="Mengamati tren fashion dan kecantikan">
+                    <option value="Berbagi tips produktivitas dan self-improvement">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label>💪 Yang Kamu Bisa</label>
+                <input type="text" id="goodAt" list="bisaList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="bisaList">
+                    <option value="Mengoperasikan Canva / Photoshop">
+                    <option value="Editing video pendek (Capcut/Tiktok)">
+                    <option value="Copywriting dan bikin skrip video">
+                    <option value="Manajemen keuangan dasar">
+                    <option value="Bahasa Inggris aktif (speaking/writing)">
+                    <option value="Problem solving dan negosiasi">
+                    <option value="Memasak dan baking">
+                    <option value="Membuat website / koding dasar">
+                </datalist>
+            </div>
+        </div>
+        <div class="w-half">
+            <div class="form-group">
+                <label>🌍 Kenapa Dibutuhkan?</label>
+                <input type="text" id="worldNeeds" list="butuhList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="butuhList">
+                    <option value="UMKM butuh desain materi promosi yang murah">
+                    <option value="Pemula butuh panduan teknologi yang simpel">
+                    <option value="Orang butuh hiburan sepulang kerja">
+                    <option value="Anak muda butuh motivasi karir dan finansial">
+                    <option value="Orang butuh referensi tempat makan enak">
+                    <option value="Pebisnis butuh strategi marketing praktis">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label>💰 Peluang Penghasilan</label>
+                <input type="text" id="paidFor" list="duitList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="duitList">
+                    <option value="Jasa freelance desain / editing video">
+                    <option value="Endorsement dan Brand Ambassador">
+                    <option value="Menjual e-book, template, atau kelas online">
+                    <option value="Affiliate marketing (Shopee/Tiktok)">
+                    <option value="Menjadi konsultan atau mentor 1-on-1">
+                    <option value="Jasa admin sosial media (SMM)">
+                    <option value="Menjual produk fisik / merchandise">
+                </datalist>
+            </div>
+        </div>
+
+        <div class="action-box">
+            <p style="margin-top:0; font-size: 14px; font-weight: 600;">Temukan Niche yang tepat dengan bantuan AI.</p>
+            <button type="button" class="btn" onclick="generatePromptStep1()">👉 Buka ChatGPT & Cari Niche</button>
+        </div>
+
+        <div class="result-section">
+            <h4>📋 Paste Seluruh Teks ChatGPT di Sini:</h4>
+            <div class="copy-hint" style="margin-bottom: 10px;">Sistem otomatis memisahkan datanya!</div>
+            <div class="form-group">
+                <textarea id="rawPasteStep1" oninput="extractDataStep1()" placeholder="Paste teks AI yang berisi NAMA NICHE, KATEGORI, dan MICRO-NICHE sekaligus di sini..."></textarea>
+            </div>
+            
+            <div class="w-half" style="opacity: 0.9;">
+                <div class="form-group">
+                    <label>Niche Terdeteksi:</label>
+                    <input type="text" id="namaNiche" readonly placeholder="...">
+                </div>
+                <div class="form-group">
+                    <label>Kategori Terdeteksi:</label>
+                    <input type="text" id="kategoriNiche" readonly placeholder="...">
+                </div>
+            </div>
+            <div class="form-group" style="opacity: 0.9; margin-bottom: 0;">
+                <label>Micro-Niche Terdeteksi:</label>
+                <input type="text" id="microNiche" readonly placeholder="...">
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button type="button" class="btn btn-outline" onclick="nextStep(0)">Kembali</button>
+            <button type="button" class="btn" onclick="nextStep(2)">Lanjut Tahap 2 →</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 2: SWOT -->
+    <div id="step-2" class="step">
+        <div class="step-title">
+            <span>Tahap 2: Personal Detector (SWOT)</span>
+            <span style="font-size: 12px; font-weight: normal; color: #6B7280;">2 dari 3</span>
+        </div>
+
+        <div class="w-half">
+            <div class="form-group">
+                <label>📈 Kekuatanmu</label>
+                <input type="text" id="strength" list="strongList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="strongList">
+                    <option value="Konsisten dan rajin bikin konten">
+                    <option value="Punya public speaking yang percaya diri">
+                    <option value="Kreatif dan selalu punya ide-ide out of the box">
+                    <option value="Punya relasi (networking) yang luas">
+                    <option value="Menguasai tools/software dengan sangat cepat">
+                    <option value="Punya empati tinggi dan paham masalah audiens">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label>📉 Kelemahanmu</label>
+                <input type="text" id="weakness" list="weakList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="weakList">
+                    <option value="Gampang overthinking dan tidak enakan">
+                    <option value="Sering menunda pekerjaan (prokrastinasi)">
+                    <option value="Alat/gadget kurang memadai (kamera buram, hp lemot)">
+                    <option value="Susah membagi waktu dengan pekerjaan utama">
+                    <option value="Belum percaya diri tampil di depan kamera">
+                    <option value="Kurang paham cara kerja algoritma sosial media">
+                </datalist>
+            </div>
+        </div>
+        <div class="w-half">
+            <div class="form-group">
+                <label>🌟 Peluangmu</label>
+                <input type="text" id="opportunity" list="oppList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="oppList">
+                    <option value="Video pendek (Tiktok/Reels) sedang sangat naik daun">
+                    <option value="Banyak brand lokal mencari kreator nano/micro">
+                    <option value="Program affiliate e-commerce yang sangat menjanjikan">
+                    <option value="Topik edukasi ini masih jarang dibahas secara mendalam">
+                    <option value="Kehadiran AI memudahkan proses bikin konten">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label>⚠️ Tantanganmu</label>
+                <input type="text" id="threat" list="threatList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="threatList">
+                    <option value="Persaingan kreator di niche ini sangat ketat">
+                    <option value="Algoritma sosial media yang cepat sekali berubah">
+                    <option value="Banyak akun besar yang mendominasi niche ini">
+                    <option value="Tren cepat berubah dan konten cepat basi">
+                    <option value="Ancaman konten diplagiasi oleh kreator lain">
+                </datalist>
+            </div>
+        </div>
+
+        <div class="action-box">
+            <p style="margin-top:0; font-size: 14px; font-weight: 600;">Buat Cerita Merek (Premis) yang menggugah emosi.</p>
+            <button type="button" class="btn" onclick="generatePromptStep2()">👉 Buka ChatGPT & Buat Premis</button>
+        </div>
+
+        <div class="result-section">
+            <h4>📋 Pilih 1 Premis Favorit dari ChatGPT:</h4>
+            <div class="form-group">
+                <div class="copy-hint">Klik "Copy" pada kotak kode premis AI, lalu paste di sini</div>
+                <textarea id="premisPilihan" placeholder="Paste premis pilihanmu di sini..."></textarea>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button type="button" class="btn btn-outline" onclick="nextStep(1)">Kembali</button>
+            <button type="button" class="btn" onclick="nextStep(3)">Lanjut Tahap 3 →</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 3: CONTENT PILLAR -->
+    <div id="step-3" class="step">
+        <div class="step-title">
+            <span>Tahap 3: Smart Pillar Generator</span>
+            <span style="font-size: 12px; font-weight: normal; color: #6B7280;">3 dari 3</span>
+        </div>
+
+        <div class="w-half">
+            <div class="form-group">
+                <label>🗣️ Tone of Voice</label>
+                <input type="text" id="tone" list="toneList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="toneList">
+                    <option value="Santai, asik, seperti ngobrol dengan teman">
+                    <option value="Profesional, formal, berwibawa, terpercaya">
+                    <option value="Edukatif, jelas, dan runut layaknya dosen">
+                    <option value="Kocak, menghibur, banyak candaan dan meme">
+                    <option value="Inspiratif, memotivasi, dan menyentuh emosi">
+                    <option value="To the point, lugas, no basa-basi (sat set)">
+                    <option value="Elegan, estetik, dan kalem (soft tone)">
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label>🎯 Target Audiens</label>
+                <input type="text" id="audiens" list="audiensList" placeholder="Ketik atau pilih opsi...">
+                <datalist id="audiensList">
+                    <option value="Pemula dan pelajar usia 18-24 tahun">
+                    <option value="Profesional muda (First Jobber) usia 25-30 tahun">
+                    <option value="Ibu rumah tangga yang ingin produktif dari rumah">
+                    <option value="Pemilik UMKM dan pebisnis pemula">
+                    <option value="Freelancer dan pekerja industri kreatif">
+                    <option value="Orang tua millenial muda (Parenting/Family)">
+                    <option value="Pecinta teknologi dan gadget (Tech-savvy)">
+                </datalist>
+            </div>
+        </div>
+
+        <div class="action-box">
+            <p style="margin-top:0; font-size: 14px; font-weight: 600;">Racik ide konten berbulan-bulan untuk Sosmed-mu.</p>
+            <button type="button" class="btn" onclick="generatePromptStep3()">✨ Generate Content Pillar di ChatGPT</button>
+        </div>
+
+        <div class="result-section">
+            <h4>Tampilkan Tabel Pillar Konten Anda:</h4>
+            <div class="copy-hint" style="margin-bottom: 10px;">Klik tombol "Copy" pada tabel Markdown AI, lalu klik tombol di bawah 👇</div>
+            
+            <button type="button" class="btn" style="background-color: #3B82F6; margin-bottom: 15px;" onclick="pasteAndRenderTable()">📋 Paste & Tampilkan Tabel</button>
+            
+            <textarea id="rawPillarData"></textarea>
+
+            <div id="renderedTableContainer" class="table-wrapper">
+                <p style="text-align: center; color: #9CA3AF; padding: 20px 0; margin: 0; font-style: italic;">(Tabel Anda akan muncul di sini)</p>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button type="button" class="btn btn-outline" onclick="nextStep(2)">Kembali</button>
+            <button type="button" class="btn" style="background-color: #10B981;" onclick="showReport()">📈 Selesai & Tampilkan Laporan</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 4: HALAMAN LAPORAN FINAL -->
+    <div id="step-4" class="step">
+        <div class="step-title" style="justify-content: center; font-size: 20px; color: var(--primary); text-align: center;">
+            🎉 Laporan Blueprint Personal Branding 🎉
+        </div>
+        
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px; font-size: 13px;">
+            Berikut adalah hasil racikan identitas dan strategi konten yang siap Anda eksekusi.
+        </p>
+
+        <div id="reportContent" class="report-card">
+            <!-- Konten Laporan -->
+        </div>
+
+        <div class="navigation">
+            <button type="button" class="btn btn-outline" onclick="nextStep(3)">← Edit Data</button>
+            <button type="button" class="btn" style="background-color: #EF4444;" onclick="downloadPDF()">📥 Unduh Laporan PDF</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function handleEnter(event, stepTarget) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            nextStep(stepTarget);
+        }
+    }
+
+    function nextStep(stepIndex) {
+        try {
+            if (stepIndex === 1) {
+                const namaInput = document.getElementById('nama');
+                if (namaInput.value.trim() === '') {
+                    alert('Tolong ketik nama kamu dulu ya!');
+                    namaInput.focus();
+                    return;
+                }
+            }
+
+            const allSteps = document.querySelectorAll('.step');
+            allSteps.forEach(el => el.classList.remove('active'));
+
+            const targetStep = document.getElementById('step-' + stepIndex);
+            if (targetStep) {
+                targetStep.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        } catch (error) {
+            console.error("Navigasi error:", error);
+            alert("Sistem mengalami kendala. Mohon refresh halaman.");
+        }
+    }
+
+    function openChatGPT(promptText) {
+        navigator.clipboard.writeText(promptText).catch(e => console.log("Clipboard error"));
+        const encodedPrompt = encodeURIComponent(promptText);
+        const finalUrl = `https://chatgpt.com/?prompt=${encodedPrompt.replace(/%20/g, '+')}&force-refresh=true`;
+        
+        try {
+            let newTab = window.open(finalUrl, '_blank');
+            if(!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
+                alert("Popup diblokir! Tapi tenang, Prompt SUDAH DISALIN OTOMATIS.\n\nSilakan buka tab baru ke chatgpt.com, lalu Paste (Ctrl+V).");
+            }
+        } catch(err) {
+            alert("Prompt Anda SUDAH DISALIN! Silakan buka chatgpt.com lalu tekan Paste (Ctrl+V).");
+        }
+    }
+
+    function extractDataStep1() {
+        const rawText = document.getElementById('rawPasteStep1').value;
+        const matchNiche = rawText.match(/NAMA NICHE:\s*(.+)/i) || rawText.match(/NICHE:\s*(.+)/i);
+        const matchKategori = rawText.match(/KATEGORI:\s*(.+)/i);
+        const matchMicro = rawText.match(/MICRO[- ]NICHE:\s*(.+)/i);
+
+        if(matchNiche) document.getElementById('namaNiche').value = matchNiche[1].trim();
+        if(matchKategori) document.getElementById('kategoriNiche').value = matchKategori[1].trim();
+        if(matchMicro) document.getElementById('microNiche').value = matchMicro[1].trim();
+    }
+
+    function generatePromptStep1() {
+        const nama = document.getElementById('nama').value;
+        const love = document.getElementById('love').value;
+        const goodAt = document.getElementById('goodAt').value;
+        const worldNeeds = document.getElementById('worldNeeds').value;
+        let paidFor = document.getElementById('paidFor').value || "Aku masih belum tau, tolong dibantu temukan peluang monetisasinya.";
+
+        const prompt = `Perkenalkan nama ku: ${nama}\n\n` +
+        `Saya ingin menemukan niche terbaik yang sesuai dengan Ikigai saya. Tolong bantu saya menghubungkan elemen ini:\n` +
+        `- What I Love: ${love}\n` +
+        `- What I'm Good At: ${goodAt}\n` +
+        `- What The World Needs: ${worldNeeds}\n` +
+        `- What I Can Be Paid For: ${paidFor}\n\n` +
+        `Berdasarkan ini, bantu saya menemukan Niche yang tepat.\n\n` +
+        `PENTING: Di bagian akhir jawabanmu, WAJIB sediakan ringkasan spesifik dengan format baku di bawah ini agar mudah saya copy-paste.\n\n` +
+        `NAMA NICHE: [Saran Niche Terbaik]\n` +
+        `KATEGORI: [Kategori Niche Tersebut]\n` +
+        `MICRO-NICHE: [Spesifikasi Micro-Niche]\n`;
+
+        openChatGPT(prompt);
+    }
+
+    function generatePromptStep2() {
+        const namaNiche = document.getElementById('namaNiche').value;
+        const strength = document.getElementById('strength').value;
+        const weakness = document.getElementById('weakness').value;
+        const opportunity = document.getElementById('opportunity').value;
+        const threat = document.getElementById('threat').value;
+
+        if(!namaNiche) {
+            alert("Sistem belum mendeteksi Niche-mu. Pastikan kamu sudah paste hasil AI di kotak Tahap 1.");
+            return;
+        }
+
+        const prompt = `Nama akun/niche aku: ${namaNiche}.\n\n` +
+        `Analisis SWOT saya:\n` +
+        `- KEKUATAN: ${strength}\n` +
+        `- KELEMAHAN: ${weakness}\n` +
+        `- PELUANG: ${opportunity}\n` +
+        `- ANCAMAN: ${threat}\n\n` +
+        `Buatkan 10 pilihan PREMIS personal branding dari analisis di atas. Gunakan pola penceritaan emosional.\n\n` +
+        `🚨 INSTRUKSI PENTING FORMAT OUTPUT 🚨:\n` +
+        `Kamu WAJIB meletakkan MASING-MASING teks premis ke dalam blok kode (Code Block / triple backticks) tersendiri agar muncul tombol Copy per kalimat.`;
+
+        openChatGPT(prompt);
+    }
+
+    function generatePromptStep3() {
+        const namaNiche = document.getElementById('namaNiche').value;
+        const premisPilihan = document.getElementById('premisPilihan').value;
+        const tone = document.getElementById('tone').value;
+        const audiens = document.getElementById('audiens').value;
+
+        if(!premisPilihan) {
+            alert("Harap paste 1 kalimat Premis yang kamu pilih di kotak Tahap 2.");
+            return;
+        }
+
+        const prompt = `Buatkan strategi Content Pillar jangka panjang di sosial media untuk niche: ${namaNiche}.\n` +
+        `- Premis saya: "${premisPilihan}"\n` +
+        `- Tone of Voice: ${tone}\n` +
+        `- Target Audiens: ${audiens}\n\n` +
+        `Buat mencakup 5 pilar konten utama: Educational, Entertain, Social Proof, Personal Story, dan Promotional. Berikan minimal 3 ide sub-topik untuk setiap pilar, beserta rekomendasi format (Reels/Carousel/dll).\n\n` +
+        `🚨 INSTRUKSI PENTING FORMAT OUTPUT 🚨:\n` +
+        `Kamu WAJIB menyajikan strategi ini HANYA dalam bentuk TABEL MARKDOWN, dan tabel tersebut WAJIB dimasukkan ke dalam SATU BLOK KODE (Code Block) tunggal. Jangan beri penjelasan bertele-tele di luar tabel.`;
+
+        openChatGPT(prompt);
+    }
+
+    async function pasteAndRenderTable() {
+        try {
+            const textFromClipboard = await navigator.clipboard.readText();
+            
+            if (!textFromClipboard.includes('|')) {
+                alert("Sepertinya yang Anda copy bukan format tabel Markdown. Pastikan Anda klik tombol 'Copy' pada tabel di ChatGPT.");
+                return;
+            }
+
+            document.getElementById('rawPillarData').value = textFromClipboard;
+
+            const rows = textFromClipboard.trim().split('\n');
+            let htmlTable = '<table>';
+            let isHeader = true;
+
+            for (let row of rows) {
+                if (row.match(/^[|\-\s]+$/)) continue;
+                let cols = row.split('|').map(col => col.trim()).filter(col => col.length > 0);
+                
+                if (cols.length > 0) {
+                    htmlTable += '<tr>';
+                    for (let col of cols) {
+                        if (isHeader) {
+                            htmlTable += `<th>${col}</th>`;
+                        } else {
+                            htmlTable += `<td>${col}</td>`;
+                        }
+                    }
+                    htmlTable += '</tr>';
+                    isHeader = false;
+                }
+            }
+            htmlTable += '</table>';
+
+            document.getElementById('renderedTableContainer').innerHTML = htmlTable;
+
+        } catch (err) {
+            alert("Gagal membaca Clipboard. Pastikan browser Anda mengizinkan akses Clipboard, atau coba Copy ulang dari ChatGPT.");
+        }
+    }
+
+    function showReport() {
+        const nama = document.getElementById('nama').value || "-";
+        const niche = document.getElementById('namaNiche').value || "-";
+        const kategori = document.getElementById('kategoriNiche').value || "-";
+        const micro = document.getElementById('microNiche').value || "-";
+        const premis = document.getElementById('premisPilihan').value || "Belum ada premis yang dipilih.";
+        
+        let pillarTableHtml = document.getElementById('renderedTableContainer').innerHTML;
+        if(pillarTableHtml.includes('Tabel Anda akan muncul di sini')) {
+            pillarTableHtml = `<p style="color: #EF4444; font-size: 14px;">⚠️ Anda belum memasukkan dan me-render tabel Pillar Konten dari ChatGPT.</p>`;
+        }
+
+        const reportHtml = `
+            <div class="report-section-title">1. Identitas Utama</div>
+            <table class="report-info-table" style="width: 100%; margin-bottom: 25px;">
+                <tr><td style="width: 110px; font-weight: 600; color: var(--text-muted);">Nama/Brand</td><td><strong style="color: var(--text-main);">: ${nama}</strong></td></tr>
+                <tr><td style="font-weight: 600; color: var(--text-muted);">Niche</td><td><strong style="color: var(--text-main);">: ${niche}</strong></td></tr>
+                <tr><td style="font-weight: 600; color: var(--text-muted);">Kategori</td><td><strong style="color: var(--text-main);">: ${kategori}</strong></td></tr>
+                <tr><td style="font-weight: 600; color: var(--text-muted);">Micro-Niche</td><td><strong style="color: var(--text-main);">: ${micro}</strong></td></tr>
+            </table>
+
+            <div class="report-section-title">2. Cerita Merek (Premis)</div>
+            <div class="report-quote">
+                ${premis}
+            </div>
+
+            <div class="report-section-title">3. Strategi Konten (Pillar)</div>
+            <div class="table-wrapper" style="margin-top: 10px;">
+                ${pillarTableHtml}
+            </div>
+        `;
+
+        document.getElementById('reportContent').innerHTML = reportHtml;
+        nextStep(4);
+    }
+
+    function downloadPDF() {
+        window.print();
+    }
+</script>
+
+</body>
+</html>
